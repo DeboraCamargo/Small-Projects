@@ -1,0 +1,48 @@
+﻿body {
+    background-color: #b3b3ff;
+}
+
+#main{
+    margin: 30px auto;
+    width: 490px;
+}
+
+input {
+    font-family: Verdana, Arial, Helvetica;
+    font-size: 15pt;
+    color: #F02727;
+    background-color: #90DB9A;
+    border: 1px solid #E20E19;
+    width: 200px;
+}
+label {
+    color: black;
+    margin: 5px;
+    width: 100px;
+    display: inline-block;
+}
+
+button {
+    background-color: #4d4dff;
+    border: 2px solid #000066;
+    display: inline-block;
+    font-size: 15px;
+    border-radius: 10%;
+}
+
+    button:hover {
+        background-color: #4CAF50; /* Green */
+        color: white;
+    }
+
+.div {
+    font-family: Verdana, Arial, Helvetica;
+    font-size: 15pt;
+}
+
+#output {
+    color: red;
+    border: 1px dashed red;
+    border-radius: 10%;
+    background-color: antiquewhite;
+}

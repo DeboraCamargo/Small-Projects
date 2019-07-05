@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link href="main.css" rel="stylesheet">
+    <script src="dataControl.js"></script>
+    <!--[if lt IE 9]>
+<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+    <title>Debora Project 1</title>
+</head>
+
+<script lang="text/javascript">
+
+    // inicializing table size varibles and assign fixed value to it
+    var rows = 20;
+    var columns = 10;
+    // inicializing selected cells varible - given the table output starts at 1, we need to do the same here
+    var rowSelected =3;
+    var colSelected=9;
+
+    // function that creates the output table, search for data saved in JSON, load it and then Update the table
+    function CreateTable() {
+        document.getElementById("SpreadsheetTable").innerHTML = buildTable(rows, columns);
+
+        //createOnlyDataTable(rows, columns);
+        initData(rows, columns);
+        updateTable(getData());
+    }
+
+    //Function that actually creates de table
+    function buildTable(rows, columns) {
+
+        // start with the table declaration
+        var divHTML = "<table border='1' cellpadding='0' cellspacing='0' class='TableClass'>";
+
+        // next do the column header labels
+        divHTML += "<tr><th></th>";
+
+        for (var j = 0; j < columns; j++)
+            divHTML += "<th>" + String.fromCharCode(j + 65) + "</th>";
+
+        // closing row tag for the headers
+        divHTML += "</tr>";
+
+        // now do the main table area
+        for (var i = 1; i <= rows; i++) {
+            divHTML += "<tr>";
+            // ...first column of the current row (row label)
+            divHTML += "<td id='" + i + "_0' class='BaseColumn'>" + i + "</td>";
+
+            // ... the rest of the columns
+            for (var j = 1; j <= columns; j++)
+                divHTML += "<td id='" + i + "_" + j + "' id='AlphaColumn' class='AlphaColumn' onclick='selectCell(this)'></td>";
+
+            // ...end of row
+            divHTML += "</tr>";
+        }
+
+        // finally add the end of table tag
+        divHTML += "</table>";
+
+        //alert(divHTML);
+        return divHTML;
+    }
+
+    // knowing the selected cell and apply effects that will happen to the cell once it it selected
+    function selectCell(ref) {
+        clearSelectedCell();
+        
+        var rcArray = ref.id.split('_');
+        console.log(rcArray);
+        
+        // setting the color style throgh java script
+        //ref.style.backgroundColor = "green";
+        
+        //creating a way to set style in he css
+        ref.classList.add("selected");
+
+        rowSelected = rcArray[0];
+        colSelected = rcArray[1];
+        document.getElementById("txtFormula").value = getCellValue(rowSelected - 1, colSelected - 1);
+        document.getElementById("txtFormula").focus();
+    }
+
+    function onInputkeyUp() {
+        //ensure the change is only applied when enter key is pressed
+        if (window.event.keyCode === 13) {
+            //Tablecontrol starts at 0, so the correction is being made
+            setCellValue(rowSelected - 1, colSelected - 1, getTextBoxValue());
+            // getSelectedCell().innerHTML = document.getElementById("txtFormula").value;
+            updateTable(getData());
+        }
+    }
+
+
+    function updateTable(data) {
+        for (let i_row = 0; i_row < data.length; i_row++) {
+            for (let i_col = 0; i_col < (data[i_row]).length; i_col++) {
+                document.getElementById((i_row + 1) + "_" + (i_col + 1)).innerHTML = data[i_row][i_col];
+            }
+        }
+    }
+
+    function getSelectedCell() {
+        return document.getElementById(rowSelected + "_" + colSelected);
+    }
+
+    function getTextBoxValue() {
+        return document.getElementById("txtFormula").value;
+    }
+
+    function clearSelectedCell() {
+        //getSelectedCell().style.backgroundColor = "white";
+
+        getSelectedCell().classList.remove("selected");
+
+    }
+
+
+    function onclickLoad() {
+        loadData();
+        updateTable(getData());
+    }
+
+    function onclickSave() {
+        saveData();
+    }
+
+    function onclickClear() {
+        createOnlyDataTable(rows, columns);
+        updateTable(getData());
+
+    }
+
+</script>
+
+<body onload="CreateTable()">
+    <div>
+        <input type="text" id="txtFormula" onkeyup="onInputkeyUp(this);" />
+        <input id="btnLoad" type="button" value="Load" onclick="onclickLoad();" />
+        <input id="btnSave" type="button" value="Save" onclick="onclickSave();" />
+        <input id="btnClear" type="button" value="Clear" onclick="onclickClear();" />
+        <br /><br />
+        <div id="SpreadsheetTable">
+        </div>
+    </div>
+</body>
+
+</html>

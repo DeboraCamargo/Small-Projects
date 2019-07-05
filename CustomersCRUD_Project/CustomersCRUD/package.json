@@ -1,0 +1,13 @@
+{
+  "name": "customers-crud",
+  "version": "0.0.0",
+  "description": "CustomersCRUD",
+  "main": "app.js",
+  "author": {
+    "name": ""
+  },
+  "dependencies": {
+    "express": "^4.16.4",
+    "mssql": "^4.3.0"
+  }
+}

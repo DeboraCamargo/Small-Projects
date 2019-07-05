@@ -1,0 +1,157 @@
+﻿<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <link href="StyleSheet1.css" rel="stylesheet" />
+    <script>
+        $(document).ready(function () {
+
+            $("#btnAdd").click(function () {
+
+                var test = $('input').filter(function () { return $(this).val() != "" && $(this).attr("id") != "custID"});
+                if (test.length > 0) {
+
+                    $.post("/api/data", {
+                        // this is the data being posted to the web server
+                        FirstName: $("#firstName").val(),
+                        LastName: $("#lastName").val(),
+                        City: $("#city").val(),
+                        Address: $("#address").val(),
+                        Province: $("#province").val(),
+                        PostalCode: $("#postalCode").val()
+                    },
+                        // callback function returns status and data as object literal
+                        function (data) {
+                            $("#custID").val(data.CustID);
+                            $("#output").html("Saved with success");
+
+                        }).fail(function (err) { $("#output").html("Unable to save: " + err.responseText); console.log(err.responseText); });
+                } else {
+                    $("#output").html("You need to fill at least one field before saving");
+                }
+            });
+
+            $("#btnDelete").click(function () {
+
+                if ($('#custID').val() != "") {
+                    //se id não existir
+                    $.ajax({
+                        url: "/api/data/" + $("#custID").val(),
+                        type: 'DELETE',
+                        //$.noop means nooperation when there is no callback
+                        //success: $.noop,
+                        //error: $.noop
+
+                        success: function (data, status) {
+                            $("#output").html("Delete with success");
+                            $("input").val("");
+                        },
+                        error: function (err) {
+                            $("#output").html("Unable to delete: " +  err.responseText);
+                        }
+
+                    });
+
+                } else {
+                    $("#output").html("Please input an ID first");
+                }
+            });
+
+            $("#btnUpdate").click(function () {
+                //Tratar se ID for vazio
+                $.post("/api/data/update/" + $("#custID").val(), {
+                    CustID: $("#custID").val(),
+                    // this is the data being posted to the web server
+                    FirstName: $("#firstName").val(),
+                    LastName: $("#lastName").val(),
+                    City: $("#city").val(),
+                    Address: $("#address").val(),
+                    Province: $("#province").val(),
+                    PostalCode: $("#postalCode").val()
+
+                },
+
+                    // callback function returns status and data as object literal
+                    function (data, status) {
+                        $("#output").html("Updated with success");
+
+                    });
+
+            });
+
+            $("#btnNew").click(function () {
+                $("input").val("");
+                $("#output").html("");
+            });
+
+
+
+            $("#btnFind").click(function () {
+                //Tratar se ID for vazio
+                //verificar se ID existe
+                $.post("/api/data/find/" + $("#custID").val(), {
+                    CustID: $("#custID").val()
+
+                },
+
+                    // callback function returns status and data as object literal
+                    function (data, status) {
+                        $("#custID").val(data.custID);
+                        $("#firstName").val(data.FirstName);
+                        $("#lastName").val(data.LastName);
+                        $("#address").val(data.Address);
+                        $("#city").val(data.City);
+                        $("#province").val(data.Province);
+                        $("#postalCode").val(data.PostalCode);
+                        $("#output").html("sucess");
+                    });
+
+            });
+
+        });
+
+        function init() {
+            $("#output").html("");
+        }
+
+
+    </script>
+
+</head>
+<body onload="init();">
+    <div id="main">
+
+        <label>Customer#</label>
+        <input type="text" id="custID" />
+        <br /><br />
+        <label>First Name</label>
+        <input type="text" id="firstName" />
+        <br /><br />
+        <label>Last Name</label>
+        <input type="text" id="lastName" />
+        <br /><br />
+        <label>Address</label>
+        <input type="text" id="address" />
+        <br /><br />
+        <label>City</label>
+        <input type="text" id="city" />
+        <br /><br />
+        <label>Province</label>
+        <input type="text" id="province" />
+        <br /><br />
+        <label>Postal Code</label>
+        <input type="text" id="postalCode" />
+        <hr />
+        <button id="btnNew">new</button>
+        <button id="btnAdd">add</button>
+        <button id="btnUpdate">update</button>
+        <button id="btnDelete">delete</button>
+        <button id="btnFind">find</button>
+        <hr />
+        <div id="output"></div>
+        </div>
+</body>
+</html>

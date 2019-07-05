@@ -1,0 +1,27 @@
+header, nav, section {display:block;}
+
+.TableClass {
+    font-family: Verdana, Arial, Helvetica;
+    font-size: 9.0pt;
+}
+
+.BaseColumn {
+    text-align: center;
+}
+
+.AlphaColumn {
+    width: 100px;
+    height: 25px;
+    cursor: pointer;
+    border: 1px solid black;
+}
+
+.selected{
+    color: white;
+    background-color: green;
+    border: 2px solid white;
+}
+
+td{
+    text-align: center;
+}

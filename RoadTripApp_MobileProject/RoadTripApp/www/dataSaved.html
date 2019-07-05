@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />
+    <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+    <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+    <title>Data Saved</title>
+</head>
+<script type="text/javascript">
+    function back() {
+        history.back();
+    }
+
+    function loadData() {
+
+        //In this case local storage is not needed since the data is available in the database
+        var list = JSON.parse(localStorage.locations);
+        var output = "";
+        for (let i in list) {
+            //output += JSON.stringify(list[i]);
+            output += `name: ${list[i].namePlace}<br>  descr: ${list[i].description}<br>
+            Lat: ${list[i].latitude  || 'n/a'}<br>  
+            Longi: ${list[i].longitude  || 'n/a'}<br>
+            Alt: ${list[i].altitude || 'n/a'}<hr>`;
+        }
+        document.getElementById("output").innerHTML = output;
+    }
+
+
+</script>
+
+<body onload="loadData();">
+
+    <h1><a href="#" onclick="back();return false;">Back to the main page</a></h1>
+    <hr>
+    <div id="output"></div>
+
+</body>
+
+</html>
