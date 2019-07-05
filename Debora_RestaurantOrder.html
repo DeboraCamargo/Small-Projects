@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Debora's Bistro</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+        crossorigin="anonymous" />
+
+    <style type="text/css">
+        body {
+            background-color: #dddddd;
+        }
+
+        main {
+            max-width: 600px;
+            margin: 10px auto;
+            background-color: #ffffff;
+            padding: 30px 15px;
+        }
+
+        input[type=text] {
+            width: 60px;
+        }
+        #output .panel{
+            background-color: #c45d84;
+
+        }
+    </style>
+
+    <script language="JavaScript" type="text/JavaScript">
+   var totalBill = 0;
+   var apetizerDescription=["**No selection**","Deep Fried Calamari","Soup du Jour","Garden Salad","Garlic Bread"];
+   var apetizerPrice =[0.00,7.50,4.99,3.99,4.50];
+   var entreeDescription=["**No selection**","Rib-Steak","Fettuccini Alfredo","Pan-Fried Sole","Mediterranean Platter","Vegetarian Lasagna"];
+   var entreePrice =[0.00,15.95,11.25,17.95,13.50,9.00];
+   var dessertDescription=["**No selection**","Ice Cream Sundae","Cheesecake","Chocolate Truffle Cake","Raspberry Mousse"];
+   var dessertPrice =[0.00,2.95,5.00,6.00,4.50]; 
+   var beverageDescription=["**No selection**","Water","Juice","Pop","Milk","Coffee","Tea"];
+   var beveragePrice =[0.00,0.00,2.00,2.00,2.00,1.75,1.75];
+
+function init() {
+    fillList("Apetizer",apetizerDescription,apetizerPrice);
+    fillList("Entree",entreeDescription,entreePrice);
+    fillList("Dessert",dessertDescription,dessertPrice);
+    fillList("Bevarage",beverageDescription,beveragePrice);  
+}
+
+function fillList(id, description, price){
+    for(var i=0; i<description.length; i++){
+        document.getElementById(id).innerHTML += '<li class="list-group-item">'+(i+1)+". "+description[i]
+        + '<span class="badge"> $'+price[i].toFixed(2)+'</span> </li>';
+    }
+}
+
+function calculateOrder(){
+    var CalcApetizer= document.getElementById("Selection0").value-1;
+    var CalcEntree= document.getElementById("Selection1").value-1;
+    var CalcDessert= document.getElementById("Selection2").value-1;
+    var CalcBevarage= document.getElementById("Selection3").value-1;
+
+
+    totalBill = apetizerPrice[CalcApetizer]+entreePrice[CalcEntree]+dessertPrice[CalcDessert]
+    +beveragePrice[CalcBevarage];
+
+    var text = " ";
+    if(CalcApetizer!=0)
+        text+= apetizerDescription[CalcApetizer]+"<br>";
+    if(CalcEntree!=0)
+        text+= entreeDescription[CalcEntree]+"<br>";
+    if(CalcDessert!=0)
+        text+= dessertDescription[CalcDessert]+"<br>";
+    if(CalcBevarage!=0)
+        text+= beverageDescription[CalcBevarage];
+  
+    document.getElementById("output").innerHTML = '<div class="panel panel-default">Thank you. Your order consists of:<br>' + text
+    +"<br><br>"+"Your total Bill comes to: $"+totalBill.toFixed(2)+'</div>';
+    
+}
+
+function validateItem(param, items, menuName){
+        var itemNumber = param.value;
+        if(itemNumber > items.length || itemNumber<1){
+            alert("There is no such option in "+menuName+" menu");
+            param.value = 1;
+            param.focus();
+        }
+}
+
+function clearOrder(){
+    document.getElementById("Selection0").value = 1;
+    document.getElementById("Selection1").value = 1;
+    document.getElementById("Selection2").value = 1;
+    document.getElementById("Selection3").value = 1;
+
+    document.getElementById("output").innerHTML ="";
+
+}
+
+    </script>
+</head>
+
+<body onload="init()">
+    <main>
+        <div class="row">
+            <div class="col-md-12">
+                <h3 class="text-center"> Debora's Bistrô </h3>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-10 col-md-offset-1">
+                <form id="form1" class="form-horizontal">
+
+                    <div class="form-group">
+                        <div class="col-md-8">
+                            <label for="Apetizer">Please select one item from apetizer menu:</label>
+                            <ul class="list-group" id="Apetizer">
+                            </ul>
+                        </div>
+                        <div class="col-md-12">
+                            <label for="Selection0">Please enter your selection</label>
+                            <input type="text" class="form-control" id="Selection0" maxlength="2" value="1" onkeypress='return event.charCode >= 48 && event.charCode <= 57'
+                                onchange="validateItem(this,apetizerDescription,'apetizer');" />
+                        </div>
+                    </div>
+
+
+                    <div class="form-group">
+                        <div class="col-md-8">
+                            <label for="Entree">Please select one item from entree menu:</label>
+                            <ul class="list-group" id="Entree">
+                            </ul>
+                        </div>
+                        <div class="col-md-12">
+                            <label for="Selection1">Please enter your selection</label>
+                            <input type="text" class="form-control" id="Selection1" maxlength="2" value="1" onkeypress='return event.charCode >= 48 && event.charCode <= 57'
+                                onchange="validateItem(this,entreeDescription,'entree');" />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-md-8">
+                            <label for="Dessert">Please select one item from Dessert menu:</label>
+                            <ul class="list-group" id="Dessert">
+                            </ul>
+                        </div>
+                        <div class="col-md-12">
+                            <label for="Selection2">Please enter your selection</label>
+                            <input type="text" class="form-control" id="Selection2" maxlength="2" value="1" onkeypress='return event.charCode >= 48 && event.charCode <= 57'
+                                onchange="validateItem(this,dessertDescription,'dessert');" />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-md-8">
+                            <label for="Bevarage">Please select one item from beverage menu:</label>
+                            <ul class="list-group" id="Bevarage">
+                            </ul>
+                        </div>
+                        <br>
+                        <div class="col-md-12">
+                            <label for="Selection3">Please enter your selection</label>
+                            <input type="text" class="form-control" id="Selection3" maxlength="2" value="1" onkeypress='return event.charCode >= 48 && event.charCode <= 57'
+                                onchange="validateItem(this,beverageDescription,'beverage');" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+
+                        <button type="button" class="btn btn-primary" onclick="calculateOrder();">Complete Order</button>
+                        <button type="button" class="btn btn-primary" onclick="clearOrder();">Clear order</button>
+                    </div>
+                    <div class="form-group" id="output">  
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </main>
+</body>
+
+</html>
